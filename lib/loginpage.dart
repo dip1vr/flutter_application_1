@@ -1,109 +1,165 @@
 import 'package:flutter/material.dart';
-import 'dart:ui'; // Add this import for ImageFilter
+import 'dart:ui'; // Add this import for BackdropFilter
 
 class LoginPage extends StatelessWidget {
-  final _formKey = GlobalKey<FormState>(); // Key to identify the form
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Login Page'), // Title of the AppBar
-      ),
       body: Stack(
         children: [
-          // Background image
+          // Background image with blur effect
           Positioned.fill(
             child: Image.asset(
-              'lib/assets/parl.gif',
+              'lib/assets/parl.gif', // Background image
               fit: BoxFit.cover,
             ),
           ),
-          // Blur effect over the background image
           Positioned.fill(
             child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0), // Apply blur effect
+              filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
               child: Container(
-                color: Colors.cyanAccent.withOpacity(0), // Optional: Add a color overlay
+                color: Colors.black.withOpacity(0.8),
               ),
             ),
           ),
-          // Main container for the login form
-          Container(
-            padding: EdgeInsets.all(20),
-            child: Center(
-              child: Card(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15.0), // Rounded corners for the card
-                ),
-                elevation: 10, // Shadow elevation
-                shadowColor: Colors.cyanAccent, // Shadow color
-                color: Colors.white, // Card background color
-                child: Container(
-                  width: screenWidth < 600 ? screenWidth * 0.9 : 400, // Adjust width based on screen size
-                  padding: const EdgeInsets.all(16.0),
-                  child: Form(
-                    key: _formKey, // Assign the form key
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        // Welcome text
-                        Text(
-                          'Welcome',
-                          style: TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
+          Center(
+            child: Card(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20), // Rounded card
+              ),
+              elevation: 10,
+              color: Color.fromARGB(255, 25, 25, 25).withOpacity(0.8), // Dark card color with opacity
+              child: Container(
+                width: screenWidth < 600 ? screenWidth * 0.9 : 400,
+                padding: const EdgeInsets.all(20),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      // Logo or Icon
+                      Center(
+                        child: Image.asset(
+                          'lib/assets/da.jpg',
+                          width: 100,
+                          height: 100,
+                        ),
+                      ),
+                      SizedBox(height: 20),
+                      // Welcome Text
+                      Text(
+                        'Welcome Back',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      // Signup link
+                      Text(
+                        "Don't have an account yet? Sign up",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: Colors.grey),
+                      ),
+                      SizedBox(height: 20),
+                      // Email Input Field
+                      TextFormField(
+                        decoration: InputDecoration(
+                          filled: true,
+                          fillColor: Colors.white12,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          labelText: 'Email Address',
+                          labelStyle: TextStyle(color: Colors.grey),
+                        ),
+                        style: TextStyle(color: Colors.white),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your email';
+                          }
+                          return null;
+                        },
+                      ),
+                      SizedBox(height: 20),
+                      // Password Input Field
+                      TextFormField(
+                        obscureText: true,
+                        decoration: InputDecoration(
+                          filled: true,
+                          fillColor: Colors.white12,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          labelText: 'Password',
+                          labelStyle: TextStyle(color: Colors.grey),
+                        ),
+                        style: TextStyle(color: Colors.white),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your password';
+                          } else if (value.length < 6) {
+                            return 'Password must be at least 6 characters';
+                          }
+                          return null;
+                        },
+                      ),
+                      SizedBox(height: 20),
+                      // Login Button
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.blueAccent,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
                           ),
                         ),
-                        SizedBox(height: 20.0), // Spacing
-                        // Username input field
-                        TextFormField(
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: 'Username',
-                            hintText: 'Enter your username',
+                        onPressed: () {
+                          if (_formKey.currentState!.validate()) {
+                            print('Login successful');
+                          }
+                        },
+                        child: Text('Login', style: TextStyle(color: Colors.white)),
+                      ),
+                      SizedBox(height: 10),
+                      // OR Divider
+                      Row(
+                        children: [
+                          Expanded(child: Divider(color: Colors.grey)),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                            child: Text(
+                              'OR',
+                              style: TextStyle(color: Colors.grey),
+                            ),
                           ),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter your username'; // Validation message
-                            }
-                            return null;
-                          },
-                        ),
-                        SizedBox(height: 20.0), // Spacing
-                        // Password input field
-                        TextFormField(
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: 'Password',
-                            hintText: 'Enter your password',
+                          Expanded(child: Divider(color: Colors.grey)),
+                        ],
+                      ),
+                      SizedBox(height: 10),
+                      // Social Buttons
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          IconButton(
+                            icon: Icon(Icons.apple),
+                            color: Colors.white,
+                            onPressed: () => print('Apple login'),
                           ),
-                          obscureText: true, // Hide the password text
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter your password'; // Validation message
-                            }
-                            else if (value.length < 6) {
-                              return 'Password must be at least 6 characters long'; // Validation message
-                            }
-                            return null;
-                          },
-                        ),
-                        SizedBox(height: 20.0), // Spacing
-                        // Login button
-                        ElevatedButton(
-                          onPressed: () {
-                            if (_formKey.currentState!.validate()) {
-                              print('Login button pressed'); // Print message on button press
-                              // Add your login logic here
-                            }
-                          },
-                          child: Text('Login'),
-                        ),
-                      ],
-                    ),
+                          IconButton(
+                            icon: Icon(Icons.email),
+                            color: Colors.white,
+                            onPressed: () => print('Google login'),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
               ),
