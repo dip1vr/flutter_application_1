@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'dart:ui';
+import 'dart:ui'; // For BackdropFilter
 
-import 'package:flutter_application_1/signup.dart'; // Add this import for BackdropFilter
-
-class LoginPage extends StatelessWidget {
+class Signup extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +16,7 @@ class LoginPage extends StatelessWidget {
           // Background image with blur effect
           Positioned.fill(
             child: Image.asset(
-              'lib/assets/parl.gif', // Background image
+              'lib/assets/parl.gif',
               fit: BoxFit.cover,
             ),
           ),
@@ -31,10 +31,10 @@ class LoginPage extends StatelessWidget {
           Center(
             child: Card(
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20), // Rounded card
+                borderRadius: BorderRadius.circular(20),
               ),
               elevation: 10,
-              color: Color.fromARGB(255, 25, 25, 25).withOpacity(0.8), // Dark card color with opacity
+              color: Color.fromARGB(255, 25, 25, 25).withOpacity(0.8),
               child: Container(
                 width: screenWidth < 600 ? screenWidth * 0.9 : 400,
                 padding: const EdgeInsets.all(20),
@@ -55,20 +55,13 @@ class LoginPage extends StatelessWidget {
                       SizedBox(height: 20),
                       // Welcome Text
                       Text(
-                        'Welcome Back',
+                        'Welcome',
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
                         ),
-                      ),
-                      SizedBox(height: 10),
-                      // Signup link
-                      Text(
-                        "Don't have an account yet? Sign up",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(color: Colors.grey),
                       ),
                       SizedBox(height: 20),
                       // Email Input Field
@@ -93,6 +86,7 @@ class LoginPage extends StatelessWidget {
                       SizedBox(height: 20),
                       // Password Input Field
                       TextFormField(
+                        controller: _passwordController,
                         obscureText: true,
                         decoration: InputDecoration(
                           filled: true,
@@ -100,7 +94,7 @@ class LoginPage extends StatelessWidget {
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
-                          labelText: 'Password',
+                          labelText: 'Create Password',
                           labelStyle: TextStyle(color: Colors.grey),
                         ),
                         style: TextStyle(color: Colors.white),
@@ -114,7 +108,31 @@ class LoginPage extends StatelessWidget {
                         },
                       ),
                       SizedBox(height: 20),
-                      // Login Button
+                      // Confirm Password Input Field
+                      TextFormField(
+                        controller: _confirmPasswordController,
+                        obscureText: true,
+                        decoration: InputDecoration(
+                          filled: true,
+                          fillColor: Colors.white12,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          labelText: 'Confirm Password',
+                          labelStyle: TextStyle(color: Colors.grey),
+                        ),
+                        style: TextStyle(color: Colors.white),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please confirm your password';
+                          } else if (value != _passwordController.text) {
+                            return 'Passwords do not match';
+                          }
+                          return null;
+                        },
+                      ),
+                      SizedBox(height: 20),
+                      // Signup Button
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.blueAccent,
@@ -124,10 +142,10 @@ class LoginPage extends StatelessWidget {
                         ),
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
-                            print('Login successful');
+                            print('Signup Successful');
                           }
                         },
-                        child: Text('Login', style: TextStyle(color: Colors.white)),
+                        child: Text('Signup', style: TextStyle(color: Colors.white)),
                       ),
                       SizedBox(height: 10),
                       // OR Divider
@@ -159,15 +177,11 @@ class LoginPage extends StatelessWidget {
                             color: Colors.white,
                             onPressed: () => print('Google login'),
                           ),
-                          ElevatedButton(
-                            onPressed: (){
-                              Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                              builder: (context) => Signup()),
-                            );
+                          ElevatedButton(onPressed:(){
+                            Navigator.pop(context);
+
                           },
-                          child: Text('Signup',style: TextStyle(color: Colors.black87),),
+                          child: Text('Login',style: TextStyle(color: Colors.black87),),
                           ),
                         ],
                       ),
